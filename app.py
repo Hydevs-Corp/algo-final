@@ -18,12 +18,33 @@ def analyze():
         if not data:
             return jsonify({"error": "La liste des tweets est vide"}), 400
 
+        import joblib
+        import os
+
+        model = None
+        if os.path.exists('sentiment_model.pkl'):
+            model = joblib.load('sentiment_model.pkl')
+
         results = {}
         for i, tweet in enumerate(data):
-            # Logique temporaire : scores basiques entre -1 et 1
-            # (Sera remplacé par le modèle de Machine Learning plus tard)
-            score = (len(tweet) % 3) - 1 # donne -1, 0, ou 1
-            results[f"tweet{i+1}"] = score
+            if model:
+                # Predict probabilities
+                proba = model.predict_proba([tweet])[0]
+                # Assuming classes are [-1, 1]
+                classes = list(model.classes_)
+                if 1 in classes and -1 in classes:
+                    prob_pos = proba[classes.index(1)]
+                    prob_neg = proba[classes.index(-1)]
+                    score = prob_pos - prob_neg # Score between -1 and 1
+                else:
+                    # Fallback if only one class was learned
+                    pred = model.predict([tweet])[0]
+                    score = float(pred)
+            else:
+                score = 0.0 # Default if no model
+            
+            # Format the score to 2 decimal places or keep it raw
+            results[f"tweet{i+1}"] = round(score, 4)
 
         return jsonify(results), 200
 
