@@ -23,8 +23,9 @@ def analyze():
         import os
 
         model = None
-        if os.path.exists('sentiment_model.pkl'):
-            model = joblib.load('sentiment_model.pkl')
+        model_path = os.path.join(os.path.dirname(__file__), 'sentiment_model.pkl')
+        if os.path.exists(model_path):
+            model = joblib.load(model_path)
 
         results = {}
         for i, tweet in enumerate(data):

@@ -1,10 +1,13 @@
 #!/bin/bash
 
+# Chemin du répertoire parent
+PROJECT_DIR=$(dirname "$(realpath "$0")")/..
+
 # Rendre le script Python exécutable
-chmod +x retrain.py
+chmod +x "$PROJECT_DIR/src/retrain.py"
 
 # Chemin absolu vers le script
-SCRIPT_PATH=$(realpath retrain.py)
+SCRIPT_PATH=$(realpath "$PROJECT_DIR/src/retrain.py")
 PYTHON_PATH=$(which python3)
 
 # Ajouter la tâche cron pour s'exécuter tous les dimanches à minuit

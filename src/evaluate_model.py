@@ -43,7 +43,9 @@ def evaluate_model():
     X_train, X_test, y_train, y_test = train_test_split(X, y_true, test_size=0.25, random_state=42)
 
     try:
-        model = joblib.load('sentiment_model.pkl')
+        import os
+        model_path = os.path.join(os.path.dirname(__file__), 'sentiment_model.pkl')
+        model = joblib.load(model_path)
     except Exception as e:
         print(f"Erreur de chargement du modèle : {e}")
         return
@@ -68,13 +70,17 @@ def evaluate_model():
     cm_neg = confusion_matrix(y_true_neg, y_pred_neg)
 
     # Sauvegarde des matrices de confusion en images
+    import os
+    reports_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'reports')
+    os.makedirs(reports_dir, exist_ok=True)
+    
     plt.figure(figsize=(6, 4))
     sns.heatmap(cm_pos, annot=True, fmt='d', cmap='Blues', xticklabels=['Non-Positif', 'Positif'], yticklabels=['Non-Positif', 'Positif'])
     plt.title('Matrice de Confusion - Prédictions Positives')
     plt.ylabel('Vrai')
     plt.xlabel('Prédit')
     plt.tight_layout()
-    plt.savefig('confusion_matrix_positive.png')
+    plt.savefig(os.path.join(reports_dir, 'confusion_matrix_positive.png'))
     plt.close()
 
     plt.figure(figsize=(6, 4))
@@ -83,7 +89,7 @@ def evaluate_model():
     plt.ylabel('Vrai')
     plt.xlabel('Prédit')
     plt.tight_layout()
-    plt.savefig('confusion_matrix_negative.png')
+    plt.savefig(os.path.join(reports_dir, 'confusion_matrix_negative.png'))
     plt.close()
 
     print("Matrices de confusion générées et sauvegardées en tant qu'images png.")

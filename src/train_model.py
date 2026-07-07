@@ -47,8 +47,10 @@ def train_and_save_model():
 
     model.fit(X_train, y_train)
 
+    import os
+    model_path = os.path.join(os.path.dirname(__file__), 'sentiment_model.pkl')
     # Sauvegarde du modèle entraîné
-    joblib.dump(model, 'sentiment_model.pkl')
+    joblib.dump(model, model_path)
     print("Modèle entraîné et sauvegardé avec succès dans 'sentiment_model.pkl'.")
 
 if __name__ == '__main__':
