@@ -7,6 +7,13 @@ Cette API permet d'évaluer le sentiment (positif ou négatif) d'une liste de tw
 - Python 3.8+
 - Git
 
+## Structure du projet
+
+- `src/` : Code source Python (API, scripts d'entraînement et d'évaluation, modèle ML).
+- `scripts/` : Scripts d'automatisation (cron, tâches planifiées).
+- `reports/` : Rapports d'évaluation et matrices de confusion.
+- `docs/` : Énoncé et exemples de requêtes.
+
 ## Installation
 
 1. **Cloner le dépôt** :
@@ -29,12 +36,12 @@ Cette API permet d'évaluer le sentiment (positif ou négatif) d'une liste de tw
 4. **Entraîner le modèle initialement** :
    Assurez-vous que la base de données est lancée, puis exécutez le script d'entraînement pour générer `sentiment_model.pkl`.
    ```bash
-   python train_model.py
+   python src/train_model.py
    ```
 
 5. **Lancer l'API Flask** :
    ```bash
-   python app.py
+   python src/app.py
    ```
    L'API sera disponible sur `http://localhost:5000`.
 
@@ -66,19 +73,19 @@ Retourne un JSON avec les scores de sentiment (entre -1 et 1). Un score proche d
 Le modèle peut être réentraîné avec les nouvelles données ajoutées à la base de données. 
 
 ### Sur Linux / macOS :
-Un script `setup_cron.sh` est fourni. Il configure un cronjob pour exécuter `retrain.py` tous les dimanches à minuit.
+Un script `setup_cron.sh` est fourni. Il configure un cronjob pour exécuter `src/retrain.py` tous les dimanches à minuit.
 ```bash
-./setup_cron.sh
+./scripts/setup_cron.sh
 ```
 
 ### Sur Windows :
 Un script `setup_task.bat` est fourni. Exécutez-le en tant qu'administrateur pour créer une tâche planifiée Windows.
 ```cmd
-setup_task.bat
+scripts\setup_task.bat
 ```
 
 ## Évaluation du modèle
-Le script `evaluate_model.py` permet de générer les matrices de confusion (sous forme d'images PNG) et d'afficher le rapport de classification. Un rapport détaillé est disponible dans le fichier `rapport_evaluation.md` (qui peut être exporté en PDF).
+Le script `evaluate_model.py` permet de générer les matrices de confusion (sous forme d'images PNG) dans le dossier `reports/` et d'afficher le rapport de classification. Un rapport détaillé est disponible dans le fichier `reports/rapport_evaluation.md` (qui peut être exporté en PDF).
 ```bash
-python evaluate_model.py
+python src/evaluate_model.py
 ```
