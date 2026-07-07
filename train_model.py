@@ -36,13 +36,16 @@ def train_and_save_model():
     X = df['text']
     y = df['label']
 
+    from sklearn.model_selection import train_test_split
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
+
     # Création d'un pipeline: Vectorisation + Régression Logistique
     model = make_pipeline(
         TfidfVectorizer(max_features=1000),
         LogisticRegression()
     )
 
-    model.fit(X, y)
+    model.fit(X_train, y_train)
 
     # Sauvegarde du modèle entraîné
     joblib.dump(model, 'sentiment_model.pkl')
