@@ -8,9 +8,10 @@ Ce rapport présente l'évaluation des performances du modèle de `LogisticRegre
 Le modèle génère des scores pour les prédictions positives et négatives. Les matrices de confusion ci-dessous (générées via `evaluate_model.py`) illustrent les performances du modèle sur les données annotées de la table `tweets`.
 
 - **Matrice de Confusion pour les prédictions Positives** : Évalue la capacité du modèle à identifier correctement les tweets positifs par rapport au reste.
-- **Matrice de Confusion pour les prédictions Négatives** : Évalue la capacité du modèle à identifier correctement les tweets négatifs par rapport au reste.
+![Matrice Positives](confusion_matrix_positive.png)
 
-*(Note : Les images `confusion_matrix_positive.png` et `confusion_matrix_negative.png` générées par le script doivent être incluses ici dans la version finale du document).*
+- **Matrice de Confusion pour les prédictions Négatives** : Évalue la capacité du modèle à identifier correctement les tweets négatifs par rapport au reste.
+![Matrice Négatives](confusion_matrix_negative.png)
 
 ## 3. Analyse des Performances
 
@@ -21,7 +22,20 @@ Les mesures de performances (Précision, Rappel et F1-Score) calculées sur le j
 - **Rappel** : Indique le pourcentage de vrais positifs (ou négatifs) correctement identifiés par le modèle.
 - **F1-Score** : Moyenne harmonique de la précision et du rappel, fournissant une vue équilibrée des performances.
 
-*Les valeurs exactes dépendent de la distribution des données dans la base MySQL au moment de l'évaluation.* Sur le jeu de données initial factice, le modèle mémorise parfaitement les classes, d'où des scores très élevés, proches de 1.0.
+**Résultats de l'évaluation sur le jeu de validation (25% des données) :**
+
+```text
+              precision    recall  f1-score   support
+
+          -1       0.00      0.00      0.00       2.0
+           1       0.00      0.00      0.00       0.0
+
+    accuracy                           0.00       2.0
+   macro avg       0.00      0.00      0.00       2.0
+weighted avg       0.00      0.00      0.00       2.0
+```
+
+*Analyse* : Actuellement, le jeu de données initial (inséré via `init.sql`) ne contient que 8 tweets. Lors de la séparation des données (75% entraînement, 25% validation), le jeu de validation ne contenait que 2 tweets (tous de classe négative `-1`). Le modèle, s'étant entraîné sur très peu de données, n'a pas réussi à les classifier correctement (précisant des scores de 0). Cela illustre parfaitement la nécessité absolue d'avoir un dataset beaucoup plus large pour que le modèle puisse apprendre et généraliser correctement.
 
 ### Observations sur les erreurs fréquentes et biais éventuels
 - **Biais de mots-clés** : Les modèles basés sur TF-IDF ont tendance à sur-pondérer certains mots (ex: "génial", "nul"). Si ces mots sont utilisés dans un contexte sarcastique (ex: "C'est vraiment génial... de perdre mon temps"), le modèle risque de se tromper.
