@@ -18,6 +18,7 @@ def analyze():
         if not data:
             return jsonify({"error": "La liste des tweets est vide"}), 400
 
+        # pyrefly: ignore [missing-import]
         import joblib
         import os
 

@@ -1,4 +1,6 @@
+# pyrefly: ignore [missing-import]
 import mysql.connector
+# pyrefly: ignore [missing-import]
 from mysql.connector import Error
 
 def create_connection():
