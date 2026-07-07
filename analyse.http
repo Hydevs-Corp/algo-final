@@ -1,0 +1,9 @@
+POST http://localhost:5000/analyze
+Content-Type: application/json
+
+[
+  "Ce produit est génial !",
+  "Je déteste cette application.",
+  "Une qualité exceptionnelle, je suis ravi.",
+  "C'est nul, ça ne marche pas du tout."
+]
